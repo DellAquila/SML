@@ -1,18 +1,11 @@
-// Copyright 2016 Coffee Stain Studios. All Rights Reserved.
+// Copyright Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
-#include "Serialization/BufferArchive.h"
-#include "Engine/World.h"
-#include "Array.h"
-#include "UnrealString.h"
-#include "GameFramework/Actor.h"
-#include "UObject/Class.h"
 
-#include "Object.h"
-#include "UObject/Interface.h"
+#include "UObject/Object.h"
 #include "FGSaveSystem.h"
+#include "Serialization/BufferArchive.h" //MODDING EDIT: SaveToDiskWithCompression wants FBufferArchive
 #include "FGObjectReference.h"
-#include "Engine/EngineTypes.h"
 #include "FGSaveSession.generated.h"
 
 // @todosave: Change the FText to a Enum, so server and client can have different localizations
@@ -99,6 +92,10 @@ public:
 	 * @param willLoad - we will later on get a LoadGame call
 	 */
 	void Init( bool willLoad );
+
+	/** Called when auto save interval option is updated */
+	UFUNCTION()
+	void OnAutosaveIntervalUpdated( FString cvar );
 
 	/** Get the save system from a world */
 	static class UFGSaveSession* Get( class UWorld* world );
@@ -262,6 +259,9 @@ public: // MODDING EDIT protected -> public
 
 	/** Name of the save that will be saved at end of frame */
 	FString mPendingSaveName;
+
+	/** Is pending save an autosave? */
+	bool mPendingSaveIsAuto;
 	
 	/** Callback to end of frame to be removed after save */
 	FDelegateHandle mPendingSaveWorldHandle;

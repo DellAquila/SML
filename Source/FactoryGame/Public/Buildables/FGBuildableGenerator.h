@@ -1,11 +1,8 @@
-// Copyright 2016 Coffee Stain Studios. All Rights Reserved.
+// Copyright Coffee Stain Studios. All Rights Reserved.
 
 #pragma once
-#include "Array.h"
-#include "GameFramework/Actor.h"
-#include "UObject/Class.h"
 
-#include "FGBuildableFactory.h"
+#include "Buildables/FGBuildableFactory.h"
 #include "FGBuildableGenerator.generated.h"
 
 /**
@@ -18,6 +15,7 @@ class FACTORYGAME_API AFGBuildableGenerator : public AFGBuildableFactory
 public:
 	/** Decide on what properties to replicate */
 	virtual void GetLifetimeReplicatedProps( TArray<FLifetimeProperty>& OutLifetimeProps ) const override;
+	virtual void PreReplication( IRepChangedPropertyTracker& ChangedPropertyTracker ) override;
 
 	/** Constructor */
 	AFGBuildableGenerator();
@@ -36,10 +34,6 @@ public:
 	UFUNCTION( BlueprintPure, Category = "Power" )
 	float GetLoadPercentage() const { return mLoadPercentage; }
 
-	/** @return true if the fuse is triggered. */
-	UFUNCTION( BlueprintPure, Category = "Power" )
-	float IsFuseTriggered() const { return mIsFuseTriggered; }
-
 	/** The power this generator can produce. */
 	UFUNCTION( BlueprintPure, Category = "Power" )
 	float GetPowerProductionCapacity() const;
@@ -52,12 +46,12 @@ public:
 	UFUNCTION( BlueprintPure, Category = "Power" )
 	float CalcPowerProductionCapacityForPotential( float potential ) const;
 
-
 	virtual void SetActorHiddenInGame( bool bNewHidden ) override;
 
 	/** Called to check if power production can be started. */
 	UFUNCTION( BlueprintNativeEvent, BlueprintPure, Category = "Generator" )
 	bool CanStartPowerProduction() const;
+
 protected:
 	// Begin AFGBuildableFactory interface
 	virtual void Factory_TickProducing( float dt ) override;
@@ -99,10 +93,4 @@ public: //MODDING EDIT private -> public
 	UPROPERTY( Replicated )
 	float mLoadPercentage;
 
-	/** Is the fuse triggered. */
-	UPROPERTY( Replicated, Meta = (NoAutoJson = true) )
-	bool mIsFuseTriggered;
-
-public:
-	FORCEINLINE ~AFGBuildableGenerator() = default;
 };

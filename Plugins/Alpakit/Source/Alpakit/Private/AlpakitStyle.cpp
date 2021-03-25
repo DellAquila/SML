@@ -1,8 +1,6 @@
 #include "AlpakitStyle.h"
-#include "Styling/SlateStyleRegistry.h"
-#include "Framework/Application/SlateApplication.h"
-#include "Slate/SlateGameResources.h"
 #include "Interfaces/IPluginManager.h"
+#include "Styling/SlateStyleRegistry.h"
 
 static FName StyleSetName(TEXT("AlpakitStyle"));
 TSharedPtr< FSlateStyleSet > FAlpakitStyle::StyleInstance = NULL;
@@ -43,9 +41,9 @@ bool ShouldUseHatIcon() {
 
 TSharedRef<FSlateStyleSet> FAlpakitStyle::Create() {
 	TSharedRef<FSlateStyleSet> Style = MakeShareable(new FSlateStyleSet(StyleSetName));
-	Style->SetContentRoot(IPluginManager::Get().FindPlugin("Alpakit")->GetBaseDir() / TEXT("Resources"));
+	Style->SetContentRoot(IPluginManager::Get().FindPlugin(TEXT("Alpakit"))->GetBaseDir() / TEXT("Resources"));
 	const FString IconName = ShouldUseHatIcon() ? TEXT("AlpakitHat40") : TEXT("Alpakit40");
-	Style->Set("Alpakit.OpenPluginWindow", new IMAGE_BRUSH(IconName, Icon40x40));
+	Style->Set(TEXT("Alpakit.OpenPluginWindow"), new IMAGE_BRUSH(IconName, Icon40x40));
 	return Style;
 }
 

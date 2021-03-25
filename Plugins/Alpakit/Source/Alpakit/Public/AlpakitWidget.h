@@ -1,9 +1,7 @@
 #pragma once
 
-#include "AlpakitSettings.h"
+#include "AlpakitModEntryList.h"
 #include "Slate.h"
-#include "IDetailsView.h"
-#include "Widget.h"
 
 class SAlpakitWidget : public SCompoundWidget {
 public:
@@ -11,13 +9,8 @@ public:
 	SLATE_END_ARGS()
 
 	void Construct(const FArguments& InArgs);
-	void SaveSettings() const;
-private:
-	UAlpakitSettings* AlpakitSettings;
-	TSharedPtr<SButton> AlpakitButton;
-	TSharedPtr<SButton> SaveSettingsButton;
-	TSharedPtr<IDetailsView> DetailsView;
 
-	FReply SavedSettingsTriggered() const;
-	FReply PackButtonTriggered();
+private:
+	TSharedPtr<IDetailsView> DetailsView;
+	TSharedPtr<SAlpakitModEntryList> ModList;
 };
